@@ -17,7 +17,7 @@ resource "azurerm_linux_virtual_machine" "lvm" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = tls_private_key.ssh_key.public_key_openssh
+    public_key = file("~/.ssh/id_rsa.pub")
   }
 
   os_disk {
@@ -33,16 +33,12 @@ resource "azurerm_linux_virtual_machine" "lvm" {
   }
 }
 
-resource "tls_private_key" "ssh_key" {
-    algorithm = "RSA"
-    rsa_bits = 4096
-}
-
 resource "azurerm_container_registry" "acr" {
   name                = "jgjcp2acr"
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   sku                 = "Basic"
+  admin_enabled       = true
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
