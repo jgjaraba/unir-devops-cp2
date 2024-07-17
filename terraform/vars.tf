@@ -16,12 +16,25 @@ variable "aks_vm_size" {
   default = "Standard_D2_v2"
 }
 
-output "private_ssh_key" {
-  value = tls_private_key.ssh_key.private_key_openssh
-  sensitive = true
-}
 output "kube_config" {
   value = azurerm_kubernetes_cluster.aks.kube_config_raw
   sensitive = true
+}
+
+output "acr_admin_username" {
+  value = azurerm_container_registry.acr.admin_username
+  description = "ACR admin username to log in"
+  sensitive = true
+}
+
+output "acr_admin_password" {
+  value = azurerm_container_registry.acr.admin_password
+  description = "ACR admin password to log in"
+  sensitive = true
+}
+
+output "vm_public_ip" {
+  value = azurerm_public_ip.pip.ip_address
+  description = "Linux VM public ip"
 }
 
